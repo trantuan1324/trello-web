@@ -3,25 +3,81 @@ import Stack from "@mui/material/Stack";
 import { AccessAlarm, ThreeDRotation } from "@mui/icons-material";
 import { useColorScheme } from "@mui/material/styles";
 
-function ModeToggle() {
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
+import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
+import { Box } from "@mui/material";
+
+function ModeSelector() {
   const { mode, setMode } = useColorScheme();
+
+  const handleChange = (event) => {
+    setMode(event.target.value);
+  };
+
   return (
-    <Button
-      onClick={() => {
-        setMode(mode === "light" ? "dark" : "light");
-        // localStorage.setItem("app-theme", mode);
-        // localStorage.getItem("app-theme");
-      }}
-    >
-      {mode === "light" ? "Turn dark" : "Turn light"}
-    </Button>
+    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+      <InputLabel id="label-select-theme-mode">Mode</InputLabel>
+      <Select
+        labelId="label-select-theme-mode"
+        id="select-theme-mode"
+        value={mode}
+        label="Mode"
+        onChange={handleChange}
+      >
+        <MenuItem value="light">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <LightModeIcon fontSize="small" />
+            Light
+          </Box>
+        </MenuItem>
+        <MenuItem value="dark">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <DarkModeOutlinedIcon fontSize="small" />
+            Dark
+          </Box>
+        </MenuItem>
+        <MenuItem value="system">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <SettingsBrightnessIcon fontSize="small" />
+            System
+          </Box>
+        </MenuItem>
+      </Select>
+    </FormControl>
   );
 }
 
 function App() {
   return (
     <>
-      <ModeToggle />
+      <ModeSelector />
+      <hr />
       <h1>Rabbyte</h1>
       <Stack spacing={2} direction="row">
         <Button variant="text">Text</Button>
