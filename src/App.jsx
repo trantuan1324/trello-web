@@ -1,16 +1,17 @@
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import { AccessAlarm, ThreeDRotation } from "@mui/icons-material";
-import { useColorScheme } from "@mui/material/styles";
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import { AccessAlarm, ThreeDRotation } from '@mui/icons-material';
+import { useColorScheme } from '@mui/material/styles';
 
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import SettingsBrightnessIcon from "@mui/icons-material/SettingsBrightness";
-import { Box } from "@mui/material";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeOutlinedIcon from '@mui/icons-material/DarkModeOutlined';
+import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness';
+
+import { Box } from '@mui/material';
 
 function ModeSelector() {
   const { mode, setMode } = useColorScheme();
@@ -32,10 +33,10 @@ function ModeSelector() {
         <MenuItem value="light">
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: "8px",
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 1,
             }}
           >
             <LightModeIcon fontSize="small" />
@@ -45,10 +46,10 @@ function ModeSelector() {
         <MenuItem value="dark">
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: "8px",
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 1,
             }}
           >
             <DarkModeOutlinedIcon fontSize="small" />
@@ -58,10 +59,10 @@ function ModeSelector() {
         <MenuItem value="system">
           <Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: "8px",
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 1,
             }}
           >
             <SettingsBrightnessIcon fontSize="small" />
@@ -84,7 +85,7 @@ function App() {
         <Button variant="contained">Contained</Button>
         <Button variant="outlined">Outlined</Button>
       </Stack>
-      <Stack direction={"row"} spacing={2}>
+      <Stack direction={'row'} spacing={2}>
         <AccessAlarm />
         <ThreeDRotation />
       </Stack>
