@@ -5,7 +5,7 @@ function App() {
     <>
       {/* React router dom */}
       {/* Board details */}
-      <Board />
+      <Board/>
     </>
   )
 }
