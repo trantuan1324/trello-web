@@ -1,6 +1,6 @@
-import {Box} from "@mui/material";
+import { Box } from '@mui/material'
 
-function BoardContent() {
+export default function BoardContent() {
   return (
     <Box
       sx={{
@@ -15,5 +15,3 @@ function BoardContent() {
     </Box>
   )
 }
-
-export default BoardContent;

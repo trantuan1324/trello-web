@@ -1,13 +1,11 @@
 import Board from './pages/Boards/_id.jsx'
 
-function App() {
+export default function App() {
   return (
     <>
       {/* React router dom */}
       {/* Board details */}
-      <Board/>
+      <Board />
     </>
   )
 }
-
-export default App
