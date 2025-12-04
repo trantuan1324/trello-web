@@ -1,20 +1,74 @@
-import ModeSelector from "../ModeSelect/index.jsx";
-import {Box} from "@mui/material";
+import ModeSelector from '~/components/ModeSelect'
+import { Badge, Box, Button, Tooltip, Typography } from '@mui/material'
+import AppsIcon from '@mui/icons-material/Apps'
+import { ReactComponent as TrelloLogo } from '~/assets/trello.svg'
+import SvgIcon from '@mui/material/SvgIcon'
+import Workspaces from './Menu/Workspaces'
+import Recent from './Menu/Recent'
+import Starred from './Menu/Starred'
+import Template from './Menu/Templates'
+import TextField from '@mui/material/TextField'
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone'
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline'
+import Profiles from './Menu/Profiles'
 
-function AppBar() {
+export default function AppBar() {
   return (
     <Box
+      px={2}
       sx={{
-        backgroundColor: 'primary.light',
         width: '100%',
         height: (theme) => theme.trello.appBarHeight,
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'space-between'
       }}
     >
-      <ModeSelector/>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <AppsIcon sx={{ color: 'primary.main' }} />
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+          <SvgIcon
+            component={TrelloLogo}
+            inheritViewBox
+            sx={{ color: 'primary.main' }}
+          />
+          <Typography
+            variant="span"
+            sx={{
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
+              color: 'primary.main'
+            }}
+          >
+            Trello
+          </Typography>
+          <Workspaces />
+          <Recent />
+          <Starred />
+          <Template />
+
+          <Button variant="outlined">Create</Button>
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <TextField
+          id="outlined-search"
+          label="Search"
+          type="search"
+          size="small"
+        />
+        <ModeSelector />
+        <Tooltip title="Notifications">
+          <Badge color="primary.main" variant="dot" sx={{ cursor: 'pointer' }}>
+            <NotificationsNoneIcon sx={{ color: 'primary.main' }} />
+          </Badge>
+        </Tooltip>
+
+        <Tooltip title="Help">
+          <HelpOutlineIcon sx={{ cursor: 'pointer', color: 'primary.main' }} />
+        </Tooltip>
+        <Profiles />
+      </Box>
     </Box>
   )
 }
-
-export default AppBar;
