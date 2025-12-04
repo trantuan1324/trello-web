@@ -21,7 +21,9 @@ export default function AppBar() {
         height: (theme) => theme.trello.appBarHeight,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        gap: 2,
+        overflowX: 'auto'
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -42,12 +44,13 @@ export default function AppBar() {
           >
             Trello
           </Typography>
-          <Workspaces />
-          <Recent />
-          <Starred />
-          <Template />
-
-          <Button variant="outlined">Create</Button>
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1 }}>
+            <Workspaces />
+            <Recent />
+            <Starred />
+            <Template />
+            <Button variant="outlined">Create</Button>
+          </Box>
         </Box>
       </Box>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -56,6 +59,9 @@ export default function AppBar() {
           label="Search"
           type="search"
           size="small"
+          sx={{
+            minWidth: '120px'
+          }}
         />
         <ModeSelector />
         <Tooltip title="Notifications">

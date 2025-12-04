@@ -15,7 +15,7 @@ export default function ModeSelector() {
   }
 
   return (
-    <FormControl size="small">
+    <FormControl size="small" sx={{ minWidth: '120px' }}>
       <InputLabel id="label-select-theme-mode">Mode</InputLabel>
       <Select
         labelId="label-select-theme-mode"
