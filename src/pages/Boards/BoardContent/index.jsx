@@ -4,11 +4,12 @@ export default function BoardContent() {
   return (
     <Box
       sx={{
-        backgroundColor: 'primary.main',
         width: '100%',
         display: 'flex',
         height: (theme) =>
-          `calc(100vh - ${theme.trello.appBarHeight} - ${theme.trello.boardBarHeight})`
+          `calc(100vh - ${theme.trello.appBarHeight} - ${theme.trello.boardBarHeight})`,
+        bgcolor: (theme) =>
+          theme.palette.mode === 'dark' ? '#34495e' : '#1976d2'
       }}
     >
       Board content

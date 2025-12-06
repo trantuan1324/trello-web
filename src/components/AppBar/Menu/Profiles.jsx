@@ -47,10 +47,12 @@ export default function Profiles() {
         }}
       >
         <MenuItem>
-          <Avatar sx={{ mr: 1, width: 32, height: 32 }} /> Profile
+          <Avatar sx={{ mr: 1, width: 32, height: 32 }} />
+          Profile
         </MenuItem>
         <MenuItem>
-          <Avatar sx={{ mr: 1, width: 32, height: 32 }} /> My account
+          <Avatar sx={{ mr: 1, width: 32, height: 32 }} />
+          My account
         </MenuItem>
         <Divider />
         <MenuItem>
