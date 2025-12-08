@@ -5,22 +5,23 @@ import BoltIcon from '@mui/icons-material/Bolt'
 import VpnLockIcon from '@mui/icons-material/VpnLock'
 import DashboardIcon from '@mui/icons-material/Dashboard'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import { capitalizeFirstLetter } from '~/utils/formatter'
 
-export default function BoardBar() {
-  const MENU_STYLE = {
-    color: 'white',
-    bgcolor: 'transparent',
-    border: 'none',
-    paddingX: '5px',
-    borderRadius: '4px',
-    '.MuiSvgIcon-root': {
-      color: 'white'
-    },
-    '&:hover': {
-      bgcolor: 'primary.50'
-    }
+const MENU_STYLE = {
+  color: 'white',
+  bgcolor: 'transparent',
+  border: 'none',
+  paddingX: '5px',
+  borderRadius: '4px',
+  '.MuiSvgIcon-root': {
+    color: 'white'
+  },
+  '&:hover': {
+    bgcolor: 'primary.50'
   }
+}
 
+export default function BoardBar({ board }) {
   return (
     <Box
       sx={{
@@ -32,7 +33,6 @@ export default function BoardBar() {
         paddingX: 2,
         gap: 2,
         overflowX: 'auto',
-        borderBottom: '0.5px solid white',
         bgcolor: (theme) =>
           theme.palette.mode === 'dark' ? '#34495e' : '#1976d2'
       }}
@@ -40,13 +40,13 @@ export default function BoardBar() {
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Chip
           icon={<DashboardIcon />}
-          label="User board"
+          label={board?.title}
           onClick={() => {}}
           sx={MENU_STYLE}
         />
         <Chip
           icon={<VpnLockIcon />}
-          label="Public/Private Workspace"
+          label={capitalizeFirstLetter(board?.type)}
           onClick={() => {}}
           sx={MENU_STYLE}
         />
