@@ -23,8 +23,21 @@ import React from 'react'
 import ListCards from './ListCards/ListCards'
 import theme from '~/theme'
 import { mapOrder } from '~/utils/sorts'
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 
 export default function Column({ column }) {
+  // drag and drop
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: column._id, data: { ...column } })
+  const dndKitColumnStyle = {
+    // nếu dùng CSS.Tranform thì khi kéo thả phần tử sẽ bị stretch
+    // https://github.com/clauderic/dnd-kit/issues/117
+    transform: CSS.Translate.toString(transform),
+    transition
+  }
+
+  // dropdown menu
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
   const handleClick = (event) => {
@@ -33,10 +46,16 @@ export default function Column({ column }) {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  // order cards
   const orderedCards = mapOrder(column?.cards, column.cardOrderIds, '_id')
 
   return (
     <Box
+      ref={setNodeRef}
+      style={dndKitColumnStyle}
+      {...attributes}
+      {...listeners}
       sx={{
         minWidth: '300px',
         maxWidth: '300px',
