@@ -3,17 +3,21 @@ import ListColumns from './ListColumns/ListColumns'
 import { mapOrder } from '~/utils/sorts'
 import {
   closestCorners,
+  closestCenter,
   defaultDropAnimationSideEffects,
   DndContext,
   DragOverlay,
   MouseSensor,
   TouchSensor,
   useSensor,
-  useSensors
+  useSensors,
+  pointerWithin,
+  rectIntersection,
+  getFirstCollision
 } from '@dnd-kit/core'
 import Card from './ListColumns/Column/ListCards/Card/Card'
 import Column from './ListColumns/Column/Column'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep } from 'lodash'
 
@@ -49,6 +53,9 @@ export default function BoardContent({ board }) {
   const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] =
     useState(null)
 
+  // điểm va chạm cuối cùng khi kéo thả card
+  const lastOverId = useRef(null)
+
   useEffect(() => {
     const orderedColumns = mapOrder(
       board?.columns,
@@ -67,6 +74,54 @@ export default function BoardContent({ board }) {
       }
     })
   }
+
+  // custom lại thuật phát hiện va chạm để khắc phục lỗi card flickering gây ra sai sót data khi kéo thả card (37)
+  const collisionDetectionStrategy = useCallback(
+    (args) => {
+      // nếu kéo column thì sử dụng closestCorners
+      if (activeDragItemType == ACTIVE_DRAG_ITEM_TYPE.COLUMN) {
+        return closestCorners({ ...args })
+      }
+
+      // tìm các điểm va chạm với con trỏ
+      const pointerIntersections = pointerWithin(args)
+
+      // thuật toán phát hiện va chạm trả về mảng các điểm va chạm
+      const intersections = !!pointerIntersections?.length
+        ? pointerIntersections
+        : rectIntersection(args)
+
+      // tìm overId đầu tiên trong mảng intersections
+      let overId = getFirstCollision(intersections, 'id')
+
+      if (overId) {
+        // nếu over là column thì việc tìm tới cardId gần nhất bên trong vùng va chạm dựa vào thuật toán phát hiện va chạm
+        // closestCorners hay closestCenter đều đc
+        const checkColumn = orderedColumnsState.find(
+          (column) => column._id === overId
+        )
+        if (checkColumn) {
+          console.log('overId before', overId)
+          overId = closestCenter({
+            ...args,
+            droppableContainers: args.droppableContainers.filter(
+              (container) =>
+                container.id !== overId &&
+                checkColumn?.cardOrderIds?.includes(container.id)
+            )
+          })[0]?.id
+        }
+        console.log('overId after', overId)
+
+        lastOverId.current = overId
+        return [{ id: overId }]
+      }
+
+      // nếu không có điểm va chạm nào thì trả về mảng rỗng tranhs crash trang
+      return lastOverId.current ? [{ id: lastOverId.current }] : []
+    },
+    [activeDragItemType, orderedColumnsState]
+  )
 
   const findColumnByCardId = (cardId) => {
     return orderedColumnsState.find((column) =>
@@ -129,14 +184,10 @@ export default function BoardContent({ board }) {
         )
 
         // thêm card đang kéo vào overColumn theo vị trị index mới
-        nextOverColumn.cards = nextOverColumn.cards.toSpliced(
-          newCardIndex,
-          0,
-          {
-            ...activeDraggingCardData,
-            columnId: nextOverColumn._id
-          }
-        )
+        nextOverColumn.cards = nextOverColumn.cards.toSpliced(newCardIndex, 0, {
+          ...activeDraggingCardData,
+          columnId: nextOverColumn._id
+        })
 
         // cập nhật danh sách card mới tại column over
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(
@@ -307,7 +358,10 @@ export default function BoardContent({ board }) {
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCorners}
+      // nếu chỉ dùng closestCorners thì sẽ xảy ra lỗi card flickering gây ra sai sót data khi kéo thả card (37)
+      // https://github.com/clauderic/dnd-kit/issues/1128#issuecomment-1671336452
+      // collisionDetection={closestCorners}
+      collisionDetection={collisionDetectionStrategy}
       onDragEnd={handleDragEnd}
       onDragOver={handleDragOver}
       onDragStart={handleDragStart}
