@@ -19,7 +19,8 @@ import Card from './ListColumns/Column/ListCards/Card/Card'
 import Column from './ListColumns/Column/Column'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { arrayMove } from '@dnd-kit/sortable'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, isEmpty } from 'lodash'
+import { generatePlaceholderCard } from '~/utils/formatter'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'column',
@@ -142,7 +143,7 @@ export default function BoardContent({ board }) {
     activeDraggingCardId,
     activeDraggingCardData
   ) => {
-    setOrderedColumnsState((preColumn) => {
+    setOrderedColumnsState((preColumns) => {
       // vị trí của over card trong column đích mà card sẽ được thả
       const overCardIndex = overColumn?.cards?.findIndex((card) => {
         return card._id === overCardId
@@ -160,7 +161,7 @@ export default function BoardContent({ board }) {
           : overColumn?.cards?.length + 1
 
       // clone mảng orderedColumnsState cũ ra một cái mới để xử lý data rồi return - cập nhật orderedColumnsState mới
-      const nextColumns = cloneDeep(preColumn)
+      const nextColumns = cloneDeep(preColumns)
       const nextActiveColumn = nextColumns.find(
         (column) => column._id === activeColumn._id
       )
@@ -174,6 +175,11 @@ export default function BoardContent({ board }) {
         nextActiveColumn.cards = nextActiveColumn.cards.filter(
           (card) => card._id !== activeDraggingCardId
         )
+        // Thêm placeholder card nếu column rỗng (37.2)
+        if (isEmpty(nextActiveColumn.cards)) {
+          nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)]
+        }
+
         // cập nhật danh sách card mới tại column active
         nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(
           (card) => card._id
@@ -193,12 +199,18 @@ export default function BoardContent({ board }) {
           columnId: nextOverColumn._id
         })
 
+        // Xóa placeholder card nếu column over không rỗng
+        nextOverColumn.cards = nextOverColumn.cards.filter(
+          (card) => !card.FE_PlaceholderCard
+        )
+
         // cập nhật danh sách card mới tại column over
         nextOverColumn.cardOrderIds = nextOverColumn.cards.map(
           (card) => card._id
         )
       }
 
+      console.log('nextColumns', nextColumns)
       return nextColumns
     })
   }
