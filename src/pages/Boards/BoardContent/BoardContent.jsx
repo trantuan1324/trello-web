@@ -76,6 +76,7 @@ export default function BoardContent({ board }) {
   }
 
   // custom lại thuật phát hiện va chạm để khắc phục lỗi card flickering gây ra sai sót data khi kéo thả card (37)
+  // https://github.com/clauderic/dnd-kit/blob/master/stories/2%20-%20Presets/Sortable/MultipleContainers.tsx#L195
   const collisionDetectionStrategy = useCallback(
     (args) => {
       // nếu kéo column thì sử dụng closestCorners
@@ -86,13 +87,18 @@ export default function BoardContent({ board }) {
       // tìm các điểm va chạm với con trỏ
       const pointerIntersections = pointerWithin(args)
 
-      // thuật toán phát hiện va chạm trả về mảng các điểm va chạm
-      const intersections = !!pointerIntersections?.length
-        ? pointerIntersections
-        : rectIntersection(args)
+      // https://github.com/clauderic/dnd-kit/issues/1213#issuecomment-1691708378 (37)
+      // fix hoàn toàn (chắc thế) bug flickering khi kéo thả card ra khu vực
+      // không ghi nhận va chạm với các thành phần khác tính trong vùng kéo thả
+      if (!pointerIntersections?.length) return
 
-      // tìm overId đầu tiên trong mảng intersections
-      let overId = getFirstCollision(intersections, 'id')
+      // thuật toán phát hiện va chạm trả về mảng các điểm va chạm
+      // const intersections = !!pointerIntersections?.length
+      //   ? pointerIntersections
+      //   : rectIntersection(args)
+
+      // tìm overId đầu tiên trong mảng pointerIntersections
+      let overId = getFirstCollision(pointerIntersections, 'id')
 
       if (overId) {
         // nếu over là column thì việc tìm tới cardId gần nhất bên trong vùng va chạm dựa vào thuật toán phát hiện va chạm
@@ -101,8 +107,7 @@ export default function BoardContent({ board }) {
           (column) => column._id === overId
         )
         if (checkColumn) {
-          console.log('overId before', overId)
-          overId = closestCenter({
+          overId = closestCorners({
             ...args,
             droppableContainers: args.droppableContainers.filter(
               (container) =>
@@ -111,7 +116,6 @@ export default function BoardContent({ board }) {
             )
           })[0]?.id
         }
-        console.log('overId after', overId)
 
         lastOverId.current = overId
         return [{ id: overId }]
