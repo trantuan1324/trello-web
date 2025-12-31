@@ -3,7 +3,6 @@ import ListColumns from './ListColumns/ListColumns'
 import { mapOrder } from '~/utils/sorts'
 import {
   closestCorners,
-  closestCenter,
   defaultDropAnimationSideEffects,
   DndContext,
   DragOverlay,
@@ -12,7 +11,6 @@ import {
   useSensor,
   useSensors,
   pointerWithin,
-  rectIntersection,
   getFirstCollision
 } from '@dnd-kit/core'
 import Card from './ListColumns/Column/ListCards/Card/Card'
