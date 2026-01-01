@@ -44,6 +44,7 @@ export default function BoardBar({ board }) {
           onClick={() => {}}
           sx={MENU_STYLE}
         />
+
         <Chip
           icon={<VpnLockIcon />}
           label={capitalizeFirstLetter(board?.type)}
