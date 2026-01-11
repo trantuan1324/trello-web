@@ -10,6 +10,7 @@ import { Attachment, Comment, Group } from '@mui/icons-material'
 import React from 'react'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import theme from '~/theme'
 
 export default function Card({ card }) {
   const shouldShowCardAction = () => {
@@ -46,7 +47,13 @@ export default function Card({ card }) {
       sx={{
         cursor: 'pointer',
         overflow: 'unset',
-        display: card?.FE_PlaceholderCard ? 'none' : 'block'
+        display: card?.FE_PlaceholderCard ? 'none' : 'block',
+        boxShadow: '0 1px 1px rgba(0, 0, 0, 0.2)',
+        border: '1px solid transparent',
+        borderRadius: '4px',
+        '&:hover': {
+          borderColor: (theme) => theme.palette.primary.main
+        }
       }}
     >
       {card?.cover && <CardMedia sx={{ height: 140 }} image={card?.cover} />}

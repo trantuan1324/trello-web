@@ -6,19 +6,20 @@ import {
   defaultDropAnimationSideEffects,
   DndContext,
   DragOverlay,
+  getFirstCollision,
   MouseSensor,
+  pointerWithin,
   TouchSensor,
   useSensor,
-  useSensors,
-  pointerWithin,
-  getFirstCollision
+  useSensors
 } from '@dnd-kit/core'
 import Card from './ListColumns/Column/ListCards/Card/Card'
 import Column from './ListColumns/Column/Column'
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, isEmpty } from 'lodash'
 import { generatePlaceholderCard } from '~/utils/formatter'
+import { mockData } from '~/apis/mock-data'
 
 const ACTIVE_DRAG_ITEM_TYPE = {
   COLUMN: 'column',
@@ -57,12 +58,12 @@ export default function BoardContent({ board }) {
 
   useEffect(() => {
     const orderedColumns = mapOrder(
-      board?.columns,
-      board?.columnOrderIds,
+      mockData?.board?.columns,
+      mockData?.board?.columnOrderIds,
       '_id'
     )
     setOrderedColumnsState(orderedColumns)
-  }, [board])
+  }, [mockData?.board])
 
   const dropAnimation = {
     sideEffects: defaultDropAnimationSideEffects({
