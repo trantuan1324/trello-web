@@ -1,13 +1,4 @@
-import {
-  Box,
-  Button,
-  Divider,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  Tooltip,
-  Typography
-} from '@mui/material'
+import {Box, Button, Divider, ListItemIcon, ListItemText, Menu, Tooltip, Typography} from '@mui/material'
 import {
   AddCard,
   Cloud,
@@ -22,13 +13,13 @@ import MenuItem from '@mui/material/MenuItem'
 import React from 'react'
 import ListCards from './ListCards/ListCards'
 import theme from '~/theme'
-import { mapOrder } from '~/utils/sorts'
-import { useSortable } from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
+import {mapOrder} from '~/utils/sorts'
+import {useSortable} from '@dnd-kit/sortable'
+import {CSS} from '@dnd-kit/utilities'
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
 
-export default function Column({ column }) {
+export default function Column({column}) {
   // drag and drop
   const {
     attributes,
@@ -37,7 +28,7 @@ export default function Column({ column }) {
     transform,
     transition,
     isDragging
-  } = useSortable({ id: column._id, data: { ...column } })
+  } = useSortable({id: column._id, data: {...column}})
   const dndKitColumnStyle = {
     // nếu dùng CSS.Tranform thì khi kéo thả phần tử sẽ bị stretch
     // https://github.com/clauderic/dnd-kit/issues/117
@@ -122,7 +113,7 @@ export default function Column({ column }) {
           <Box>
             <Tooltip title="More Options">
               <MoreHoriz
-                sx={{ color: 'text.primary', cursor: 'pointer' }}
+                sx={{color: 'text.primary', cursor: 'pointer'}}
                 id="basic-column-dropdown"
                 aria-controls={open ? 'basic-menu-column-dropdown' : undefined}
                 aria-haspopup="true"
@@ -143,38 +134,38 @@ export default function Column({ column }) {
             >
               <MenuItem>
                 <ListItemIcon>
-                  <AddCard fontSize="small" />
+                  <AddCard fontSize="small"/>
                 </ListItemIcon>
                 <ListItemText>Add new card</ListItemText>
               </MenuItem>
               <MenuItem>
                 <ListItemIcon>
-                  <ContentCut fontSize="small" />
+                  <ContentCut fontSize="small"/>
                 </ListItemIcon>
                 <ListItemText>Cut</ListItemText>
               </MenuItem>
               <MenuItem>
                 <ListItemIcon>
-                  <ContentCopy fontSize="small" />
+                  <ContentCopy fontSize="small"/>
                 </ListItemIcon>
                 <ListItemText>Copy</ListItemText>
               </MenuItem>
               <MenuItem>
                 <ListItemIcon>
-                  <ContentPaste fontSize="small" />
+                  <ContentPaste fontSize="small"/>
                 </ListItemIcon>
                 <ListItemText>Paste</ListItemText>
               </MenuItem>
-              <Divider />
+              <Divider/>
               <MenuItem>
                 <ListItemIcon>
-                  <Cloud fontSize="small" />
+                  <Cloud fontSize="small"/>
                 </ListItemIcon>
                 <ListItemText>Archive this column</ListItemText>
               </MenuItem>
               <MenuItem>
                 <ListItemIcon>
-                  <DeleteForever fontSize="small" />
+                  <DeleteForever fontSize="small"/>
                 </ListItemIcon>
                 <ListItemText>Remove this column</ListItemText>
               </MenuItem>
@@ -182,7 +173,7 @@ export default function Column({ column }) {
           </Box>
         </Box>
         {/* List card */}
-        <ListCards cards={orderedCards} />
+        <ListCards cards={orderedCards}/>
         <Box
           sx={{
             height: theme.trello.columnFooterHeight,
@@ -198,11 +189,11 @@ export default function Column({ column }) {
                 justifyContent: 'space-between'
               }}
             >
-              <Button startIcon={<AddCard />} onClick={toggleOpenNewCardForm}>
+              <Button startIcon={<AddCard/>} onClick={toggleOpenNewCardForm}>
                 Add new card
               </Button>
               <Tooltip title="Drag and drop to re-order">
-                <DragHandle sx={{ cursor: 'pointer' }} />
+                <DragHandle sx={{cursor: 'pointer'}}/>
               </Tooltip>
             </Box>
           ) : (
@@ -220,10 +211,11 @@ export default function Column({ column }) {
                 size="small"
                 variant="outlined"
                 autoFocus
+                data-no-dnd="true"
                 value={newCardTitle}
                 onChange={(e) => setNewCardTitle(e.target.value)}
                 sx={{
-                  '& label': { color: 'text.primary' },
+                  '& label': {color: 'text.primary'},
                   '& input': {
                     color: (theme) => theme.palette.primary.main,
                     bgcolor: (theme) =>
@@ -243,7 +235,7 @@ export default function Column({ column }) {
                       borderColor: (theme) => theme.palette.primary.main
                     }
                   },
-                  '& .MuiOutlinedInput-input': { borderRadius: 1 }
+                  '& .MuiOutlinedInput-input': {borderRadius: 1}
                 }}
               />
               <Box
@@ -276,7 +268,10 @@ export default function Column({ column }) {
                     cursor: 'pointer'
                   }}
                   fontSize="medium"
-                  onClick={toggleOpenNewCardForm}
+                  onClick={(e) => {
+                    setNewCardTitle('')
+                    toggleOpenNewCardForm()
+                  }}
                 />
               </Box>
             </Box>
