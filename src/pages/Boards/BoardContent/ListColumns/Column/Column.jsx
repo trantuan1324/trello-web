@@ -18,6 +18,8 @@ import {useSortable} from '@dnd-kit/sortable'
 import {CSS} from '@dnd-kit/utilities'
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
+import {toast} from "react-toastify"
+
 
 export default function Column({column}) {
   // drag and drop
@@ -63,7 +65,10 @@ export default function Column({column}) {
 
   const addNewCard = () => {
     if (!newCardTitle) {
-      // TODO: Show error message to user
+      toast.error("Please enter card title",
+        {
+          position: toast.POSITION.BOTTOM_RIGHT
+        })
       return
     }
     // TODO: Add new column to backend

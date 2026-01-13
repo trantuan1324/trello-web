@@ -1,15 +1,13 @@
-import { Box, Button } from '@mui/material'
+import {Box, Button} from '@mui/material'
 import Column from './Column/Column'
-import { NoteAdd } from '@mui/icons-material'
-import {
-  horizontalListSortingStrategy,
-  SortableContext
-} from '@dnd-kit/sortable'
-import { useState } from 'react'
+import {NoteAdd} from '@mui/icons-material'
+import {horizontalListSortingStrategy, SortableContext} from '@dnd-kit/sortable'
+import {useState} from 'react'
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
+import {toast} from "react-toastify";
 
-export default function ListColumns({ columns }) {
+export default function ListColumns({columns}) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
   const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
@@ -17,7 +15,7 @@ export default function ListColumns({ columns }) {
 
   const addNewColumn = () => {
     if (!newColumnTitle) {
-      // TODO: Show error message to user
+      toast.error("Please enter column name")
       return
     }
     // TODO: Add new column to backend
@@ -46,7 +44,7 @@ export default function ListColumns({ columns }) {
         }}
       >
         {columns?.map((column) => {
-          return <Column key={column._id} column={column} />
+          return <Column key={column._id} column={column}/>
         })}
 
         {!openNewColumnForm ? (
@@ -62,7 +60,7 @@ export default function ListColumns({ columns }) {
             }}
           >
             <Button
-              startIcon={<NoteAdd />}
+              startIcon={<NoteAdd/>}
               sx={{
                 color: 'white',
                 width: '100%',
@@ -98,13 +96,13 @@ export default function ListColumns({ columns }) {
               value={newColumnTitle}
               onChange={(e) => setNewColumnTitle(e.target.value)}
               sx={{
-                '& label': { color: 'white' },
-                '& input': { color: 'white' },
-                '& label.Mui-focused': { color: 'white' },
+                '& label': {color: 'white'},
+                '& input': {color: 'white'},
+                '& label.Mui-focused': {color: 'white'},
                 '& .MuiOutlinedInput-root': {
-                  '& fieldset': { borderColor: 'white' },
-                  '&:hover fieldset': { borderColor: 'white' },
-                  '&.Mui-focused fieldset': { borderColor: 'white' }
+                  '& fieldset': {borderColor: 'white'},
+                  '&:hover fieldset': {borderColor: 'white'},
+                  '&.Mui-focused fieldset': {borderColor: 'white'}
                 }
               }}
             />
@@ -124,7 +122,7 @@ export default function ListColumns({ columns }) {
                   boxShadow: 'none',
                   border: '0.5px solid',
                   borderColor: (theme) => theme.palette.success.main,
-                  '&:hover': { bgcolor: (theme) => theme.palette.success.main }
+                  '&:hover': {bgcolor: (theme) => theme.palette.success.main}
                 }}
               >
                 Add new column
